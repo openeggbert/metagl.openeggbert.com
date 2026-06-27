@@ -17,6 +17,7 @@
     <a href="functions.html" class="active">Functions</a>
     <a href="types.html">Types</a>
     <a href="context.html">Context</a>
+    <a href="context-events.html">Ctx Events</a>
     <a href="capabilities.html">Capabilities</a>
     <a href="debug.html">Debug</a>
     <a href="examples.html">Examples</a>
@@ -59,8 +60,8 @@
 <span class="kw">void</span> <span class="fn">glDisable</span>(<span class="ty">Capability</span> cap);                         <span class="cm">// #2 ES2+</span>
 <span class="kw">void</span> <span class="fn">glEnablei</span>(<span class="ty">Capability</span> target, <span class="ty">GLuint</span> index);       <span class="cm">// #3 ES3.2</span>
 <span class="kw">void</span> <span class="fn">glDisablei</span>(<span class="ty">Capability</span> target, <span class="ty">GLuint</span> index);      <span class="cm">// #4 ES3.2</span>
-<span class="ty">GLboolean</span> <span class="fn">glIsEnabled</span>(<span class="ty">Capability</span> cap);                 <span class="cm">// #5 ES2+</span>
-<span class="ty">GLboolean</span> <span class="fn">glIsEnabledi</span>(<span class="ty">Capability</span> target, <span class="ty">GLuint</span> i);  <span class="cm">// #6 ES3.2</span></pre>
+<span class="ty">bool</span> <span class="fn">glIsEnabled</span>(<span class="ty">Capability</span> cap);                 <span class="cm">// #5 ES2+</span>
+<span class="ty">bool</span> <span class="fn">glIsEnabledi</span>(<span class="ty">Capability</span> target, <span class="ty">GLuint</span> i);  <span class="cm">// #6 ES3.2</span></pre>
 
 <h3>Blending</h3>
 <pre><span class="kw">void</span> <span class="fn">glBlendFunc</span>(<span class="ty">BlendFactor</span> sfactor, <span class="ty">BlendFactor</span> dfactor);              <span class="cm">// #7</span>
@@ -126,8 +127,8 @@
 <span class="kw">void</span>*     <span class="fn">glMapBufferRange</span>(<span class="ty">BufferTarget</span>, <span class="ty">GLintptr</span> offset,
                             <span class="ty">GLsizeiptr</span> length, <span class="ty">MapBufferAccessMask</span>);       <span class="cm">// #60 ES3+</span>
 <span class="kw">void</span>      <span class="fn">glFlushMappedBufferRange</span>(<span class="ty">BufferTarget</span>, <span class="ty">GLintptr</span>, <span class="ty">GLsizeiptr</span>);   <span class="cm">// #61 ES3+</span>
-<span class="ty">GLboolean</span> <span class="fn">glUnmapBuffer</span>(<span class="ty">BufferTarget</span> target);                              <span class="cm">// #62 ES3+</span>
-<span class="ty">GLboolean</span> <span class="fn">glIsBuffer</span>(<span class="ty">GLuint</span> buffer);                                       <span class="cm">// #63</span></pre>
+<span class="ty">bool</span> <span class="fn">glUnmapBuffer</span>(<span class="ty">BufferTarget</span> target);                              <span class="cm">// #62 ES3+</span>
+<span class="ty">bool</span> <span class="fn">glIsBuffer</span>(<span class="ty">GLuint</span> buffer);                                       <span class="cm">// #63</span></pre>
 
 <h2 id="varrays">Vertex Arrays (#67 – #97)</h2>
 <pre><span class="kw">void</span>      <span class="fn">glGenVertexArrays</span>(<span class="ty">GLsizei</span> n, <span class="ty">GLuint</span>* arrays);                    <span class="cm">// #67 ES3+</span>

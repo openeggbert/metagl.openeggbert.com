@@ -17,6 +17,7 @@
     <a href="functions.html">Functions</a>
     <a href="types.html">Types</a>
     <a href="context.html" class="active">Context</a>
+    <a href="context-events.html">Ctx Events</a>
     <a href="capabilities.html">Capabilities</a>
     <a href="debug.html">Debug</a>
     <a href="examples.html">Examples</a>
@@ -196,7 +197,7 @@ texture.upload(data);  <span class="cm">// automatically recreates if generation
 <h2 id="webgl">WebGL Notes</h2>
 <ul>
   <li>Register the Emscripten <code>HTMLELEMENT_EVENT_WEBGLCONTEXTLOST</code> callback and call <code>metagl::MarkContextLost()</code> from it.</li>
-  <li>Register <code>HTMLELEMENT_EVENT_WEBGLCONTEXTRESTORED</code> and call <code>metagl::Initialize(emscripten_GetProcAddress)</code>.</li>
+  <li>Register <code>HTMLELEMENT_EVENT_WEBGLCONTEXTRESTORED</code> and call <code>metagl::Initialize(emscripten_webgl_get_proc_address)</code>.</li>
   <li>On WebGL, <code>GetContextInfo().api == ApiKind::WebGL</code>; for WebGL 2 check <code>GetCapabilities().webgl2 == true</code>.</li>
 </ul>
 

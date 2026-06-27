@@ -17,6 +17,7 @@
     <a href="functions.html">Functions</a>
     <a href="types.html">Types</a>
     <a href="context.html">Context</a>
+    <a href="context-events.html">Ctx Events</a>
     <a href="capabilities.html">Capabilities</a>
     <a href="debug.html">Debug</a>
     <a href="examples.html">Examples</a>
@@ -43,6 +44,7 @@
     <li><a href="functions.html">Function Reference</a></li>
     <li><a href="types.html">Types Reference</a></li>
     <li><a href="context.html">Context API</a></li>
+    <li><a href="context-events.html">Context Events API</a></li>
     <li><a href="capabilities.html">Capabilities API</a></li>
     <li><a href="debug.html">Debug Logging</a></li>
     <li><a href="examples.html">Examples</a></li>
@@ -151,8 +153,9 @@ metagl::<span class="fn">glBindBuffer</span>(metagl::BufferTarget::Array, vbo);<
   <tr><td><code>metagl/Enums.hpp</code></td><td>All 89 <code>enum class</code> wrappers for GL constants</td></tr>
   <tr><td><code>metagl/EnumNames.hpp</code></td><td>Generated <code>to_string()</code> overloads for every enumerator</td></tr>
   <tr><td><code>metagl/Functions.hpp</code></td><td>Declarations of all 358 <code>metagl::gl*</code> wrapper functions</td></tr>
-  <tr><td><code>metagl/Loader.hpp</code></td><td><code>Initialize()</code>, <code>IsInitialized()</code>, <code>IsFunctionAvailable()</code></td></tr>
+  <tr><td><code>metagl/Loader.hpp</code></td><td><code>Initialize()</code>, <code>IsInitialized()</code>, <code>AllFunctionsLoaded()</code>, <code>IsFunctionAvailable()</code></td></tr>
   <tr><td><code>metagl/Context.hpp</code></td><td>Context info, status, and generation tracking</td></tr>
+  <tr><td><code>metagl/ContextEvents.hpp</code></td><td><code>ContextListener</code> interface, <code>AddContextListener()</code>, <code>RemoveContextListener()</code>, <code>NotifyContextLost()</code>, <code>NotifyContextRestored()</code></td></tr>
   <tr><td><code>metagl/Capabilities.hpp</code></td><td>Runtime ES/WebGL version and extension detection</td></tr>
   <tr><td><code>metagl/Debug.hpp</code></td><td>Optional per-call debug logging (zero cost when disabled)</td></tr>
   <tr><td><code>metagl/Emscripten.hpp</code></td><td>WebGL-specific helpers and Emscripten integration</td></tr>

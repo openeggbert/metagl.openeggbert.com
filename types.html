@@ -17,6 +17,7 @@
     <a href="functions.html">Functions</a>
     <a href="types.html" class="active">Types</a>
     <a href="context.html">Context</a>
+    <a href="context-events.html">Ctx Events</a>
     <a href="capabilities.html">Capabilities</a>
     <a href="debug.html">Debug</a>
     <a href="examples.html">Examples</a>
@@ -33,6 +34,7 @@
     <li><a href="#handles">Handle Structs</a></li>
     <li><a href="#why-handles">Why Handle Structs?</a></li>
     <li><a href="#enumnames">EnumNames</a></li>
+    <li><a href="#concepts">C++23 Concepts</a></li>
   </ul>
 </aside>
 
@@ -100,6 +102,12 @@
 <span class="kw">struct</span> <span class="ty">RenderbufferId</span> { <span class="ty">GLuint</span> value{}; };
 <span class="kw">struct</span> <span class="ty">VertexArrayId</span> { <span class="ty">GLuint</span> value{}; };
 <span class="kw">struct</span> <span class="ty">SamplerId</span>  { <span class="ty">GLuint</span> value{}; };
+<span class="kw">struct</span> <span class="ty">QueryId</span>             { <span class="ty">GLuint</span> value{}; };
+<span class="kw">struct</span> <span class="ty">TransformFeedbackId</span>  { <span class="ty">GLuint</span> value{}; };
+<span class="kw">struct</span> <span class="ty">ProgramPipelineId</span>   { <span class="ty">GLuint</span> value{}; };
+<span class="kw">struct</span> <span class="ty">UniformLocation</span>     { <span class="ty">GLint</span>  value{-1}; };
+<span class="kw">struct</span> <span class="ty">AttribLocation</span>      { <span class="ty">GLuint</span> value{}; };
+<span class="kw">struct</span> <span class="ty">ImageUnit</span>           { <span class="ty">GLuint</span> value{}; };
 
 } <span class="cm">// namespace metagl</span></pre>
 
@@ -156,6 +164,37 @@ std::string_view sname = metagl::<span class="fn">to_string</span>(st);
   This is used by the <a href="debug.html">debug logger</a> to print human-readable
   argument names instead of raw integer values.
 </p>
+
+<h2 id="concepts">C++23 Concepts</h2>
+<p>
+  <code>Types.hpp</code> defines three C++23 concepts used throughout meta-gl to
+  constrain template parameters.
+</p>
+<table>
+  <tr><th>Concept</th><th>Requires</th><th>Purpose</th></tr>
+  <tr>
+    <td><code>GlHandle</code></td>
+    <td>Type has a <code>.value</code> convertible to <code>GLuint</code></td>
+    <td>Constrains functions that accept any typed handle struct</td>
+  </tr>
+  <tr>
+    <td><code>GlEnum</code></td>
+    <td><code>enum class</code> with <code>GLenum</code> underlying type</td>
+    <td>Constrains typed GL enum parameters</td>
+  </tr>
+  <tr>
+    <td><code>SpanCompatible</code></td>
+    <td>Trivially copyable + standard layout</td>
+    <td>Constrains <code>std::span&lt;const T&gt;</code> buffer upload templates</td>
+  </tr>
+</table>
+<pre><span class="cm">// GlHandle — write generic functions over any handle type:</span>
+<span class="kw">template</span>&lt;metagl::GlHandle H&gt;
+<span class="kw">void</span> <span class="fn">deleteObject</span>(H handle);
+
+<span class="cm">// SpanCompatible — upload any trivial data to a buffer:</span>
+<span class="kw">template</span>&lt;metagl::SpanCompatible T&gt;
+<span class="kw">void</span> <span class="fn">glBufferData</span>(<span class="ty">BufferTarget</span> target, std::span&lt;<span class="kw">const</span> T&gt; data, <span class="ty">BufferUsage</span> usage);</pre>
 
 </main>
 </div>
