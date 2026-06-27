@@ -157,7 +157,7 @@ std::string <span class="fn">fmt_args</span>(Args&amp;&amp;... args) {
 
 <h2 id="enumnames">EnumNames Integration</h2>
 <p>
-  The <code>to_str()</code> function uses a C++20 <code>requires</code> expression to
+  The <code>to_str()</code> function uses a <code>requires</code> expression to
   detect whether <code>metagl::to_string()</code> is available for a given type:
 </p>
 <pre><span class="kw">if constexpr</span> (<span class="kw">requires</span> { metagl::<span class="fn">to_string</span>(val); }) {

@@ -54,10 +54,10 @@
 
 <div class="hero">
   <h1>meta-gl</h1>
-  <p>A thin, type-safe C++20 wrapper over OpenGL ES 2.0 – 3.2 and WebGL.<br>
+  <p>A thin, type-safe C++23 wrapper over OpenGL ES 2.0 – 3.2 and WebGL.<br>
      Replace raw <code>GLenum</code> parameters with strongly-typed <code>enum class</code> values, zero overhead.</p>
   <p style="margin-top:1rem">
-    <span class="badge">C++20</span>
+    <span class="badge">C++23</span>
     <span class="badge">OpenGL ES 2.0+</span>
     <span class="badge">WebGL 1 / 2</span>
     <span class="badge">Emscripten</span>
@@ -140,7 +140,7 @@ target_link_libraries(my-target PRIVATE <span class="nm">meta-gl::meta-gl</span>
 metagl::<span class="fn">glClearColor</span>(<span class="val">0.1f</span>, <span class="val">0.1f</span>, <span class="val">0.1f</span>, <span class="val">1.0f</span>);
 metagl::<span class="fn">glClear</span>(metagl::ClearBufferBit::Color | metagl::ClearBufferBit::Depth);
 
-<span class="ty">GLuint</span> shader = metagl::<span class="fn">glCreateShader</span>(metagl::ShaderType::Vertex);
+<span class="ty">metagl::ShaderId</span> shader = metagl::<span class="fn">glCreateShader</span>(metagl::ShaderType::Vertex);
 metagl::<span class="fn">glBindBuffer</span>(metagl::BufferTarget::Array, vbo);</pre>
 
 <h2 id="headers">Public Headers</h2>
@@ -150,7 +150,7 @@ metagl::<span class="fn">glBindBuffer</span>(metagl::BufferTarget::Array, vbo);<
   <tr><td><code>metagl/Types.hpp</code></td><td>GL type aliases (<code>GLuint</code>, <code>GLint</code>, <code>GlGetProcAddressFn</code>, …)</td></tr>
   <tr><td><code>metagl/Enums.hpp</code></td><td>All 89 <code>enum class</code> wrappers for GL constants</td></tr>
   <tr><td><code>metagl/EnumNames.hpp</code></td><td>Generated <code>to_string()</code> overloads for every enumerator</td></tr>
-  <tr><td><code>metagl/Functions.hpp</code></td><td>Declarations of all ~400 <code>metagl::gl*</code> wrapper functions</td></tr>
+  <tr><td><code>metagl/Functions.hpp</code></td><td>Declarations of all 358 <code>metagl::gl*</code> wrapper functions</td></tr>
   <tr><td><code>metagl/Loader.hpp</code></td><td><code>Initialize()</code>, <code>IsInitialized()</code>, <code>IsFunctionAvailable()</code></td></tr>
   <tr><td><code>metagl/Context.hpp</code></td><td>Context info, status, and generation tracking</td></tr>
   <tr><td><code>metagl/Capabilities.hpp</code></td><td>Runtime ES/WebGL version and extension detection</td></tr>
@@ -172,6 +172,6 @@ metagl::<span class="fn">glBindBuffer</span>(metagl::BufferTarget::Array, vbo);<
 </main>
 </div>
 
-<footer>meta-gl — OpenEggbert project &mdash; C++20 &mdash; OpenGL ES 2.0+</footer>
+<footer>meta-gl — OpenEggbert project &mdash; C++23 &mdash; OpenGL ES 2.0+</footer>
 </body>
 </html>

@@ -73,30 +73,23 @@
 };</pre>
 
 <h2 id="contextinfo">ContextInfo</h2>
+<p>Since v0.2.0, <code>ContextInfo</code> holds only lifecycle state. Version flags, vendor/renderer strings,
+and extension lists have moved to <a href="capabilities.html"><code>Capabilities</code></a>.</p>
 <pre><span class="kw">struct</span> <span class="ty">ContextInfo</span> {
-    <span class="ty">ApiKind</span>  api     = ApiKind::Unknown;
-    <span class="ty">int</span>      major   = <span class="val">0</span>;
-    <span class="ty">int</span>      minor   = <span class="val">0</span>;
-
-    std::string vendor;
-    std::string renderer;
-
-    <span class="cm">// OpenGL ES version flags</span>
-    <span class="ty">bool</span> gles2  = <span class="kw">false</span>;
-    <span class="ty">bool</span> gles3  = <span class="kw">false</span>;
-    <span class="ty">bool</span> gles31 = <span class="kw">false</span>;
-    <span class="ty">bool</span> gles32 = <span class="kw">false</span>;
-
-    <span class="cm">// WebGL flags (Emscripten builds only)</span>
-    <span class="ty">bool</span> webgl  = <span class="kw">false</span>;
-    <span class="ty">bool</span> webgl1 = <span class="kw">false</span>;
-    <span class="ty">bool</span> webgl2 = <span class="kw">false</span>;
+    <span class="ty">ApiKind</span>  api        = ApiKind::Unknown;
+    <span class="ty">int</span>      major      = <span class="val">0</span>;
+    <span class="ty">int</span>      minor      = <span class="val">0</span>;
 
     <span class="cm">/// Monotonically increasing. Bumped by each Initialize() call.</span>
     std::uint64_t generation = <span class="val">0</span>;
 
     <span class="ty">ContextStatus</span> status = ContextStatus::NotCreated;
 };</pre>
+<div class="callout">
+  <p><strong>Breaking change (v0.2.0):</strong> <code>vendor</code>, <code>renderer</code>, <code>gles20</code>–<code>gles32</code>,
+  and <code>webgl1</code>/<code>webgl2</code> fields were removed from <code>ContextInfo</code>. Use
+  <code>metagl::GetCapabilities()</code> for feature detection instead.</p>
+</div>
 
 <h2 id="api">API Functions</h2>
 <table>
@@ -204,7 +197,7 @@ texture.upload(data);  <span class="cm">// automatically recreates if generation
 <ul>
   <li>Register the Emscripten <code>HTMLELEMENT_EVENT_WEBGLCONTEXTLOST</code> callback and call <code>metagl::MarkContextLost()</code> from it.</li>
   <li>Register <code>HTMLELEMENT_EVENT_WEBGLCONTEXTRESTORED</code> and call <code>metagl::Initialize(emscripten_GetProcAddress)</code>.</li>
-  <li>On WebGL, <code>GetContextInfo().api == ApiKind::WebGL</code> and <code>GetContextInfo().webgl2 == true</code> for WebGL 2.</li>
+  <li>On WebGL, <code>GetContextInfo().api == ApiKind::WebGL</code>; for WebGL 2 check <code>GetCapabilities().webgl2 == true</code>.</li>
 </ul>
 
 </main>

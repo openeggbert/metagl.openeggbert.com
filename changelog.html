@@ -28,8 +28,8 @@
 <aside class="sidebar">
   <h3>Releases</h3>
   <ul>
-    <li><a href="#unreleased">Unreleased</a></li>
-    <li><a href="#commits">Recent Commits</a></li>
+    <li><a href="#v0-2-0">v0.2.0 — 2026-06-27</a></li>
+    <li><a href="#v0-1-0">v0.1.0 — initial</a></li>
   </ul>
 </aside>
 
@@ -38,97 +38,86 @@
 <p>All notable changes to meta-gl are documented here. Format follows
 <a href="https://keepachangelog.com/en/1.0.0/" target="_blank">Keep a Changelog</a>.</p>
 
-<h2 id="unreleased">Unreleased</h2>
+<h2 id="v0-2-0">v0.2.0 — 2026-06-27</h2>
+<div class="card">
+<h3>Breaking changes</h3>
+<ul>
+  <li><code>ContextListener::on_context_lost()</code> renamed to <code>OnContextLost()</code>.</li>
+  <li><code>ContextListener::on_context_restored()</code> renamed to <code>OnContextRestored()</code>.</li>
+  <li><code>ContextInfo</code> no longer contains <code>vendor</code>, <code>renderer</code>, <code>gles20</code>–<code>gles32</code>, <code>webgl</code>/<code>webgl1</code>/<code>webgl2</code> fields.
+    Use <code>GetCapabilities()</code> for feature detection. <code>ContextInfo</code> now holds only <code>api</code>, <code>major</code>, <code>minor</code>, <code>generation</code>, <code>status</code>.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Added</h3>
+<ul>
+  <li><strong>Typed handle types</strong> replacing raw <code>GLuint</code>/<code>GLint</code> parameters:
+    <code>ShaderId</code>, <code>ProgramId</code>, <code>TextureId</code>, <code>BufferId</code>,
+    <code>FramebufferId</code>, <code>RenderbufferId</code>, <code>SamplerId</code>, <code>VertexArrayId</code>,
+    <code>QueryId</code>, <code>TransformFeedbackId</code>, <code>ProgramPipelineId</code>,
+    <code>UniformLocation</code>, <code>AttribLocation</code>, <code>ImageUnit</code>.</li>
+  <li><code>EnumNames.hpp</code> — <code>to_string()</code> overloads for all 89 enum classes and handle types.</li>
+  <li><code>Debug.hpp</code> / <code>src/Debug.cpp</code> — optional GL call logging controlled by <code>METAGLDEBUG</code>.</li>
+  <li><code>Context.hpp</code> / <code>Capabilities.hpp</code> — context lifecycle state and feature-detection structs.</li>
+  <li><code>ContextEvents.hpp</code> — <code>ContextListener</code> interface with <code>AddContextListener</code> / <code>RemoveContextListener</code> / <code>NotifyContextLost</code> / <code>NotifyContextRestored</code>.</li>
+  <li><code>Emscripten.hpp</code> — <code>InstallEmscriptenContextLossCallbacks()</code> for WebGL context loss/restore.</li>
+  <li><code>SamplerParameter</code> enum for <code>glSamplerParameter*</code> / <code>glGetSamplerParameter*</code>.</li>
+  <li><code>SampleMaskValue</code> bitfield enum for <code>glSampleMaski</code>.</li>
+  <li><code>ColorAttachment</code> enum (Color0–Color31) with <code>to_framebuffer_attachment</code>, <code>to_draw_buffer</code>, <code>to_read_buffer</code> conversion helpers.</li>
+  <li><code>GlHandle</code> concept (requires <code>.value</code> of type <code>GLuint</code>).</li>
+  <li><code>GlEnum</code> concept (enum class with <code>GLenum</code> underlying type).</li>
+  <li><code>GlBitfield</code> concept with generic <code>operator|</code>, <code>operator&amp;</code>, <code>operator~</code> for all bitfield enums.</li>
+  <li><code>SpanCompatible</code> concept constraining <code>std::span&lt;const T&gt;</code> buffer upload templates.</li>
+  <li><code>std::span</code> overloads for all <code>glGen*</code> / <code>glDelete*</code> function families.</li>
+  <li><code>std::span&lt;const T&gt;</code> template overloads for <code>glBufferData</code> and <code>glBufferSubData</code>.</li>
+  <li><code>std::string_view</code> convenience overload for <code>glShaderSource</code> (single source string).</li>
+  <li>Template dispatch helpers: <code>glGetUniform&lt;T&gt;</code>, <code>glGetnUniform&lt;T&gt;</code>, <code>glTexParameter&lt;T&gt;</code>, <code>glSamplerParameter&lt;T&gt;</code>, <code>glClearBuffer&lt;T&gt;</code>, <code>glGetVertexAttrib&lt;T&gt;</code>.</li>
+  <li><code>glIs*</code> functions now return <code>bool</code> instead of <code>GLboolean</code>.</li>
+  <li><code>AllFunctionsLoaded()</code> public API in <code>Loader.hpp</code>.</li>
+  <li><code>IsFunctionAvailable(std::string_view)</code> public API in <code>Loader.hpp</code>.</li>
+  <li><code>Debug.hpp</code> and <code>EnumNames.hpp</code> included by umbrella <code>metagl.hpp</code> (opt-out via <code>METAGL_NO_DEBUG</code> / <code>METAGL_NO_ENUM_NAMES</code>).</li>
+  <li><code>Emscripten.hpp</code> included by umbrella <code>metagl.hpp</code> when <code>__EMSCRIPTEN__</code> is defined.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Changed</h3>
+<ul>
+  <li>C++ baseline raised from C++20 to <strong>C++23</strong>.</li>
+  <li>CMake: <code>target_compile_features(PUBLIC cxx_std_23)</code> propagates standard to consumers.</li>
+  <li>CMake: added <code>-Wall -Wextra -Wpedantic</code> (GCC/Clang) and <code>/W4</code> (MSVC) warning flags.</li>
+  <li>CMake: <code>find_package(meta-gl CONFIG)</code> support via <code>CMakePackageConfigHelpers</code>.</li>
+  <li>CMake: <code>BUILD_TESTING</code> option (default <code>OFF</code>) with <code>enable_testing()</code> guard.</li>
+  <li>CMake: <code>BUILD_SHARED_LIBS</code> option (default <code>OFF</code>).</li>
+  <li>CMake: <code>SANITIZE</code> option enabling ASan + UBSan for GCC/Clang.</li>
+  <li><code>g_function_availability</code> map is now cleared at the start of each <code>Initialize()</code> call.</li>
+  <li><code>BlendMode</code> enum removed (duplicated <code>BlendEquation</code>).</li>
+  <li><code>TextureFilter</code> renamed to <code>BlitFilter</code> (used only by <code>glBlitFramebuffer</code>).</li>
+  <li><code>TextureWrap</code> removed (duplicate of <code>TextureWrapMode</code>).</li>
+  <li><code>ContextInfo</code> gles/webgl flags and string fields moved to <code>Capabilities</code>.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Fixed</h3>
+<ul>
+  <li>README.md examples corrected from <code>metagl::GlClear</code> etc. to <code>metagl::glClear</code> (lowercase).</li>
+</ul>
+</div>
+
+<h2 id="v0-1-0">v0.1.0 — initial</h2>
 <div class="card">
 <h3>Added</h3>
 <ul>
   <li>Initial extraction from easy-gl as a standalone low-level GL layer.</li>
   <li><code>metagl::Initialize(GlGetProcAddressFn)</code> / <code>metagl::IsInitialized()</code> loader API.</li>
-  <li><code>metagl::LoadCurrentContext()</code> alias for <code>Initialize()</code>.</li>
-  <li><code>metagl::IsFunctionAvailable(std::string_view)</code> per-function availability check.</li>
-  <li>
-    Type-safe <code>enum class</code> wrappers covering all ES 2.0–3.2 parameter domains:
-    <ul>
-      <li><code>BufferTarget</code>, <code>BufferUsage</code>, <code>BufferParameter</code>, <code>MapBufferAccessMask</code></li>
-      <li><code>ShaderType</code>, <code>ShaderStageMask</code>, <code>ShaderParameter</code>, <code>ShaderBinaryFormat</code></li>
-      <li><code>ProgramParameter</code>, <code>ProgramInterface</code>, <code>ProgramInterfaceParameter</code>, <code>ProgramResourceProperty</code></li>
-      <li><code>TextureTarget</code>, <code>TextureParameter</code>, <code>TextureMinFilter</code>, <code>TextureMagFilter</code>, <code>TextureFilter</code></li>
-      <li><code>TextureWrapMode</code>, <code>TextureWrap</code>, <code>TextureCompareMode</code>, <code>TextureSwizzle</code></li>
-      <li><code>TextureLevelParameter</code>, <code>TextureUnit</code></li>
-      <li><code>InternalFormat</code>, <code>CompressedInternalFormat</code></li>
-      <li><code>PixelFormat</code>, <code>PixelType</code>, <code>PixelStoreParam</code></li>
-      <li><code>BlendFactor</code>, <code>BlendEquation</code>, <code>BlendMode</code></li>
-      <li><code>Capability</code>, <code>ClearBufferBit</code>, <code>ClearBuffer</code></li>
-      <li><code>CompareFunc</code>, <code>StencilOp</code>, <code>CullFace</code>, <code>FrontFace</code></li>
-      <li><code>PrimitiveType</code>, <code>DataType</code></li>
-      <li><code>FramebufferTarget</code>, <code>FramebufferAttachment</code>, <code>FramebufferStatus</code></li>
-      <li><code>FramebufferAttachmentParameter</code>, <code>FramebufferDefaultParameter</code></li>
-      <li><code>RenderbufferTarget</code>, <code>RenderbufferParameter</code></li>
-      <li><code>VertexAttribParameter</code></li>
-      <li><code>QueryTarget</code>, <code>QueryParameter</code>, <code>QueryObjectParameter</code></li>
-      <li><code>SyncCondition</code>, <code>SyncParameter</code>, <code>SyncWaitResult</code>, <code>SyncFlushMask</code></li>
-      <li><code>ImageAccess</code>, <code>MemoryBarrierMask</code></li>
-      <li><code>TransformFeedbackTarget</code>, <code>TransformFeedbackBufferMode</code></li>
-      <li><code>UniformType</code>, <code>UniformBlockParameter</code>, <code>UniformParameter</code></li>
-      <li><code>StringName</code>, <code>IntegerName</code>, <code>GetParameter</code>, <code>GetPointerParameter</code></li>
-      <li><code>ErrorCode</code>, <code>HintTarget</code>, <code>HintMode</code>, <code>PrecisionType</code></li>
-      <li><code>DebugSource</code>, <code>DebugType</code>, <code>DebugSeverity</code>, <code>DebugObjectLabel</code></li>
-      <li><code>ContextFlagMask</code>, <code>GraphicsResetStatus</code>, <code>ResetNotificationStrategy</code></li>
-      <li><code>ProvokingVertex</code>, <code>DrawBuffer</code>, <code>ReadBuffer</code></li>
-      <li><code>ProgramBinaryFormat</code>, <code>ShaderBinaryFormat</code></li>
-      <li><code>TessGenMode</code>, <code>TessGenSpacing</code></li>
-      <li>… and more (89 enum classes total)</li>
-    </ul>
-  </li>
-  <li>Bitwise <code>operator|</code> for all bitfield enum classes:
-    <code>ClearBufferBit</code>, <code>MapBufferAccessMask</code>, <code>ShaderStageMask</code>,
-    <code>MemoryBarrierMask</code>, <code>SyncFlushMask</code>.</li>
-  <li>Full set of ~400 <code>metagl::gl*</code> wrapper functions covering:
-    state management, buffer objects, vertex arrays, drawing, shaders, programs,
-    uniforms, textures, framebuffers, renderbuffers, queries, sync objects, compute,
-    transform feedback, debug output, and separable programs.</li>
-  <li><code>ContextInfo</code> struct with API kind, ES/WebGL version flags, vendor/renderer strings,
-    and monotonic generation counter.</li>
-  <li><code>ContextStatus</code> lifecycle enum: NotCreated / Current / Lost / Restored.</li>
-  <li><code>metagl::GetContextInfo()</code>, <code>GetContextGeneration()</code>,
-    <code>GetContextStatus()</code>, <code>IsContextLost()</code>,
-    <code>MarkContextLost()</code>, <code>MarkContextRestored()</code>.</li>
-  <li><code>Capabilities</code> struct with version flags, extension list, driver strings.</li>
-  <li><code>metagl::GetCapabilities()</code>, <code>SupportsGLES20/30/31/32()</code>,
-    <code>SupportsWebGL2()</code>, <code>HasExtension()</code>.</li>
-  <li><code>EnumNames.hpp</code> — generated <code>to_string()</code> overloads for all 89 enum classes.</li>
-  <li><code>Debug.hpp</code> — optional per-call GL logging system (<code>METAGLDEBUG</code>):
-    per-call function name, typed enum argument names, return values, timestamps.</li>
-  <li>CMake target <code>meta-gl</code> with alias <code>meta-gl::meta-gl</code>,
-    C++20 standard, static library.</li>
-  <li><code>Emscripten.hpp</code> — WebGL-specific helpers for Emscripten builds.</li>
+  <li>Type-safe <code>enum class</code> wrappers: <code>BufferTarget</code>, <code>BufferUsage</code>, <code>ShaderType</code>, <code>TextureTarget</code>,
+    <code>TextureParameter</code>, <code>PixelFormat</code>, <code>PixelType</code>, <code>PrimitiveType</code>, <code>DataType</code>, <code>Capability</code>,
+    <code>CompareFunc</code>, <code>CullFace</code>, <code>FrontFace</code>, <code>BlendFactor</code>, <code>StringName</code>, <code>ClearBufferBit</code>.</li>
+  <li>Bitwise <code>operator|</code> for <code>ClearBufferBit</code> mask composition.</li>
+  <li>Full set of <code>metagl::gl*</code> wrapper functions covering buffers, shaders, programs, textures,
+    vertex arrays, draw calls, and render state.</li>
+  <li>CMake target <code>meta-gl</code> with alias <code>meta-gl::meta-gl</code>, C++20 standard, static library.</li>
 </ul>
 </div>
-
-<h2 id="commits">Recent Commits</h2>
-<table>
-  <tr><th>Hash</th><th>Message</th></tr>
-  <tr>
-    <td><code>0cda8f8</code></td>
-    <td>Debugging is now defaultly disabled</td>
-  </tr>
-  <tr>
-    <td><code>92dab28</code></td>
-    <td>Add number and timestamp to CallRecord in debug log</td>
-  </tr>
-  <tr>
-    <td><code>d566fa2</code></td>
-    <td>Add EnumNames.hpp with to_string() for all 89 metagl enum classes</td>
-  </tr>
-  <tr>
-    <td><code>f69198a</code></td>
-    <td>Enable METAGLDEBUG by default in Debug.hpp</td>
-  </tr>
-  <tr>
-    <td><code>d93c624</code></td>
-    <td>Add optional GL call debug logging (#ifdef METAGLDEBUG)</td>
-  </tr>
-</table>
 
 <h2>Design Decisions Log</h2>
 <p>This section documents key architectural decisions made during the project.</p>

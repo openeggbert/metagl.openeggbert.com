@@ -34,7 +34,7 @@
     <li><a href="#enums-design">Enum Strategy</a></li>
     <li><a href="#handles">Handle Types</a></li>
     <li><a href="#function-loading">Function Loading</a></li>
-    <li><a href="#cpp20">C++20 Features Used</a></li>
+    <li><a href="#cpp23">C++23 Features Used</a></li>
     <li><a href="#what-not">What meta-gl Is Not</a></li>
     <li><a href="#rules">Refactoring Rules</a></li>
   </ul>
@@ -132,7 +132,7 @@ metagl::<span class="fn">glBindBuffer</span>(metagl::TextureTarget::Texture2D, v
 <pre><span class="cm">// Internal (simplified) — actual table is in Functions.cpp:</span>
 <span class="kw">static</span> PFNGLBINDBUFFERPROC       _glBindBuffer       = <span class="kw">nullptr</span>;
 <span class="kw">static</span> PFNGLCREATESHADERPPROC    _glCreateShader     = <span class="kw">nullptr</span>;
-<span class="cm">// ... ~400 pointers total</span>
+<span class="cm">// ... 358 pointers total</span>
 
 <span class="ty">bool</span> metagl::<span class="fn">Initialize</span>(<span class="ty">GlGetProcAddressFn</span> loader) {
     _glBindBuffer    = (<span class="ty">PFNGLBINDBUFFERPROC</span>)   loader(<span class="st">"glBindBuffer"</span>);
@@ -141,7 +141,7 @@ metagl::<span class="fn">glBindBuffer</span>(metagl::TextureTarget::Texture2D, v
     <span class="kw">return</span> _glBindBuffer != <span class="kw">nullptr</span>; <span class="cm">// core set check</span>
 }</pre>
 
-<h2 id="cpp20">C++20 Features Used</h2>
+<h2 id="cpp23">C++23 Features Used</h2>
 <table>
   <tr><th>Feature</th><th>Where used</th><th>Purpose</th></tr>
   <tr><td><code>enum class</code></td><td>Enums.hpp</td><td>Type-safe GL parameter categories</td></tr>
